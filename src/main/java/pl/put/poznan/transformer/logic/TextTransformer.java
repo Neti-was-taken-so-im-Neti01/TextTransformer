@@ -1,7 +1,9 @@
+
 package pl.put.poznan.transformer.logic;
 
 /**
- * This is just an example to show that the logic should be outside the REST service.
+ * Klasa tworząca łańcuch dekoratorów na podstawie przekazanych transformacji
+ * uruchamia go na podanym tekście.
  */
 public class TextTransformer {
 
@@ -12,7 +14,27 @@ public class TextTransformer {
     }
 
     public String transform(String text){
-        // of course, normally it would do something based on the transforms
-        return text.toUpperCase();
+
+        //Podstawowy obiekt nie zmieniający tekstu
+        TextTransform result = new BasicTextTransform();
+
+        if (transforms != null){
+            for (String transform : transforms) {
+                //Zmiana na wielkie litery zeby ujednolicic styl nazw transformacji
+                switch (transform.toUpperCase()){
+                    case "TEST":
+                        result = new TestDecorator(result);
+                        break;
+
+                    default:
+                        // Brak obslugi nieznanych transformacji
+                        throw new IllegalArgumentException(
+                            "Nieznana transformacja " + transform
+                        );
+                }
+            }
+        }
+        // Uruchomienie łańcucha transformacji na tekście
+        return result.transform(text);
     }
 }
