@@ -25,6 +25,9 @@ public class TextTransformer {
                     case "TEST":
                         result = new TestDecorator(result);
                         break;
+                    case "INTEGERS_TO_WORDS":
+                        result = new IntegersToWordsDecorator(result);
+                        break;
 
                     default:
                         // Brak obslugi nieznanych transformacji
